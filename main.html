@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestion des Noms et des Tâches</title>
+</head>
+<body>
+    <h1>Gestion des Noms et des Tâches</h1>
+    <div>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" required>
+        <button onclick="ajouterNom()">Ajouter Nom</button>
+    </div>
+    <div>
+        <label for="tache">Tâche :</label>
+        <input type="text" id="tache" required>
+        <button onclick="ajouterTache()">Ajouter Tâche</button>
+    </div>
+    <div>
+        <label for="nomSelectionne">Associer un Nom :</label>
+        <select id="nomSelectionne"></select>
+        <label for="tacheSelectionnee">à une Tâche :</label>
+        <select id="tacheSelectionnee"></select>
+        <button onclick="associerNomTache()">Associer</button>
+    </div>
+    <div>
+        <h2>Liste des Noms et des Tâches :</h2>
+        <ul id="listeNomsTaches"></ul>
+    </div>
+
+    <script>
+        const noms = [];
+        const taches = [];
+
+        function ajouterNom() {
+            const nom = document.getElementById("nom").value;
+            noms.push(nom);
+            document.getElementById("nomSelectionne").innerHTML = '';
+            noms.forEach(n => {
+                const option = document.createElement('option');
+                option.text = n;
+                document.getElementById("nomSelectionne").add(option);
+            });
+            document.getElementById("nom").value = '';
+        }
+
+        function ajouterTache() {
+            const tache = document.getElementById("tache").value;
+            taches.push(tache);
+            document.getElementById("tacheSelectionnee").innerHTML = '';
+            taches.forEach(t => {
+                const option = document.createElement('option');
+                option.text = t;
+                document.getElementById("tacheSelectionnee").add(option);
+            });
+            document.getElementById("tache").value = '';
+        }
+
+        function associerNomTache() {
+            const nomSelectionne = document.getElementById("nomSelectionne").value;
+            const tacheSelectionnee = document.getElementById("tacheSelectionnee").value;
+            const texteAssocie = `${nomSelectionne} - ${tacheSelectionnee}`;
+            const listItem = document.createElement('li');
+            listItem.textContent = texteAssocie;
+            const editNomButton = document.createElement('button');
+            editNomButton.textContent = 'Modifier Nom';
+            editNomButton.onclick = function() {
+                modifierNom(listItem);
+            };
+            const editTacheButton = document.createElement('button');
+            editTacheButton.textContent = 'Modifier Tâche';
+            editTacheButton.onclick = function() {
+                modifierTache(listItem);
+            };
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Supprimer';
+            deleteButton.onclick = function() {
+                listItem.remove();
+            };
+            listItem.appendChild(editNomButton);
+            listItem.appendChild(editTacheButton);
+            listItem.appendChild(deleteButton);
+            document.getElementById("listeNomsTaches").appendChild(listItem);
+        }
+
+        function modifierNom(listItem) {
+            const newText = prompt("Entrez le nouveau nom : ", listItem.textContent.split(" - ")[0]);
+            if (newText !== null) {
+                listItem.textContent = newText + " - " + listItem.textContent.split(" - ")[1];
+            }
+        }
+
+        function modifierTache(listItem) {
+            const tacheSelectionnee = listItem.textContent.split(" - ")[1];
+            const tacheIndex = taches.indexOf(tacheSelectionnee);
+            const newTache = prompt("Sélectionnez une tâche existante : ", tacheSelectionnee);
+            if (newTache !== null) {
+                listItem.textContent = listItem.textContent.split(" - ")[0] + " - " + newTache;
+                taches[tacheIndex] = newTache;
+                document.getElementById("tacheSelectionnee").innerHTML = '';
+                taches.forEach(t => {
+                    const option = document.createElement('option');
+                    option.text = t;
+                    document.getElementById("tacheSelectionnee").add(option);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
