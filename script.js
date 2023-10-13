@@ -1,3 +1,55 @@
+// Fonction pour ajouter un nom
+function addName() {
+    const nameInput = document.getElementById("nameInput");
+    const name = nameInput.value;
+    if (name !== "") {
+        // Récupérer les noms existants depuis le localStorage
+        const existingNames = localStorage.getItem("existingNames");
+
+        if (existingNames) {
+            // Ajouter le nouveau nom à la liste existante
+            const names = existingNames.split(",");
+            names.push(name);
+            localStorage.setItem("existingNames", names.join(","));
+        } else {
+            // S'il n'y a pas de noms existants, créer une nouvelle liste
+            localStorage.setItem("existingNames", name);
+        }
+
+        // Réactualiser la liste déroulante des noms
+        displayExistingNamesAndTasks();
+
+        // Réinitialiser le champ de saisie du nom
+        nameInput.value = "";
+    }
+}
+
+// Fonction pour ajouter une tâche
+function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const task = taskInput.value;
+    if (task !== "") {
+        // Récupérer les tâches existantes depuis le localStorage
+        const existingTasks = localStorage.getItem("existingTasks");
+
+        if (existingTasks) {
+            // Ajouter la nouvelle tâche à la liste existante
+            const tasks = existingTasks.split(",");
+            tasks.push(task);
+            localStorage.setItem("existingTasks", tasks.join(","));
+        } else {
+            // S'il n'y a pas de tâches existantes, créer une nouvelle liste
+            localStorage.setItem("existingTasks", task);
+        }
+
+        // Réactualiser la liste déroulante des tâches
+        displayExistingNamesAndTasks();
+
+        // Réinitialiser le champ de saisie de la tâche
+        taskInput.value = "";
+    }
+}
+
 // Fonction pour associer une tâche à un nom
 function associateTaskName() {
     const nameSelect = document.getElementById("nameSelect");
