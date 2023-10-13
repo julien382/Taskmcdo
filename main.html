@@ -1,109 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gestion des Noms et des Tâches</title>
+    <title>Gestion de Tâches</title>
 </head>
 <body>
-    <h1>Gestion des Noms et des Tâches</h1>
-    <div>
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" required>
-        <button onclick="ajouterNom()">Ajouter Nom</button>
-    </div>
-    <div>
-        <label for="tache">Tâche :</label>
-        <input type="text" id="tache" required>
-        <button onclick="ajouterTache()">Ajouter Tâche</button>
-    </div>
-    <div>
-        <label for="nomSelectionne">Associer un Nom :</label>
-        <select id="nomSelectionne"></select>
-        <label for="tacheSelectionnee">à une Tâche :</label>
-        <select id="tacheSelectionnee"></select>
-        <button onclick="associerNomTache()">Associer</button>
-    </div>
-    <div>
-        <h2>Liste des Noms et des Tâches :</h2>
-        <ul id="listeNomsTaches"></ul>
-    </div>
+    <h1>Gestion de Tâches</h1>
 
-    <script>
-        const noms = [];
-        const taches = [];
+    <!-- Formulaire pour ajouter un nom -->
+    <input type="text" id="nameInput" placeholder="Entrez un nom">
+    <button onclick="addName()">Ajouter un nom</button>
 
-        function ajouterNom() {
-            const nom = document.getElementById("nom").value;
-            noms.push(nom);
-            document.getElementById("nomSelectionne").innerHTML = '';
-            noms.forEach(n => {
-                const option = document.createElement('option');
-                option.text = n;
-                document.getElementById("nomSelectionne").add(option);
-            });
-            document.getElementById("nom").value = '';
-        }
+    <!-- Formulaire pour ajouter une tâche -->
+    <input type="text" id="taskInput" placeholder="Entrez une tâche">
+    <button onclick="addTask()">Ajouter une tâche</button>
 
-        function ajouterTache() {
-            const tache = document.getElementById("tache").value;
-            taches.push(tache);
-            document.getElementById("tacheSelectionnee").innerHTML = '';
-            taches.forEach(t => {
-                const option = document.createElement('option');
-                option.text = t;
-                document.getElementById("tacheSelectionnee").add(option);
-            });
-            document.getElementById("tache").value = '';
-        }
+    <!-- Formulaire pour associer une tâche à un nom -->
+    <h2>Associer une tâche à un nom</h2>
+    <select id="nameSelect">
+        <!-- Les options pour les noms existants seront générées ici -->
+    </select>
+    <select id="taskSelect">
+        <!-- Les options pour les tâches existantes seront générées ici -->
+    </select>
+    <button onclick="associateTaskName()">Associer</button>
 
-        function associerNomTache() {
-            const nomSelectionne = document.getElementById("nomSelectionne").value;
-            const tacheSelectionnee = document.getElementById("tacheSelectionnee").value;
-            const texteAssocie = `${nomSelectionne} - ${tacheSelectionnee}`;
-            const listItem = document.createElement('li');
-            listItem.textContent = texteAssocie;
-            const editNomButton = document.createElement('button');
-            editNomButton.textContent = 'Modifier Nom';
-            editNomButton.onclick = function() {
-                modifierNom(listItem);
-            };
-            const editTacheButton = document.createElement('button');
-            editTacheButton.textContent = 'Modifier Tâche';
-            editTacheButton.onclick = function() {
-                modifierTache(listItem);
-            };
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Supprimer';
-            deleteButton.onclick = function() {
-                listItem.remove();
-            };
-            listItem.appendChild(editNomButton);
-            listItem.appendChild(editTacheButton);
-            listItem.appendChild(deleteButton);
-            document.getElementById("listeNomsTaches").appendChild(listItem);
-        }
+    <!-- Tableau pour afficher les tâches aux noms associés -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Tâche</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="taskListTable">
+            <!-- Les lignes du tableau seront générées ici -->
+        </tbody>
+    </table>
 
-        function modifierNom(listItem) {
-            const newText = prompt("Entrez le nouveau nom : ", listItem.textContent.split(" - ")[0]);
-            if (newText !== null) {
-                listItem.textContent = newText + " - " + listItem.textContent.split(" - ")[1];
-            }
-        }
-
-        function modifierTache(listItem) {
-            const tacheSelectionnee = listItem.textContent.split(" - ")[1];
-            const tacheIndex = taches.indexOf(tacheSelectionnee);
-            const newTache = prompt("Sélectionnez une tâche existante : ", tacheSelectionnee);
-            if (newTache !== null) {
-                listItem.textContent = listItem.textContent.split(" - ")[0] + " - " + newTache;
-                taches[tacheIndex] = newTache;
-                document.getElementById("tacheSelectionnee").innerHTML = '';
-                taches.forEach(t => {
-                    const option = document.createElement('option');
-                    option.text = t;
-                    document.getElementById("tacheSelectionnee").add(option);
-                });
-            }
-        }
-    </script>
+    <!-- Inclure le fichier JavaScript externe -->
+    <script src="script.js"></script>
 </body>
 </html>
